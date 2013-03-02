@@ -6,9 +6,22 @@
     <script type="text/javascript" src="http://ajax.microsoft.com/ajax/jquery/jquery-1.4.2.min.js"></script>
     <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.js"></script>
     <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    
     <script type='text/javascript'>
       $(document).ready(function(){
-        $('.btn').button();
+        $('#id_search').click(function(){
+          var search_text = ($('#searchbox').val());
+          $.ajax({
+            url: '{% url user_info_get_results %}',
+            data: {'search_text': search_text },
+            type: 'get',
+            async: 'false',
+            success: function(result) {
+              $('#search_results').html(result);
+            },
+          });
+        });
       });    
     </script>
   </head>

@@ -3,20 +3,20 @@
 <div id='search' style='width:900px;text-align:center;margin:30px;height:50px'>
   <input type="search" id="searchbox" name="searchbox" placeholder="Enter your search word" data-provide="typeahead" class="search-query" style="width:360px; height:23px;font-size:12pt;align:center  font-family: Georgia, Garamond, Times New Roman, Times, serif; color: #444;"><span style="padding-left:10px"></span>
   <!-- <input type="button" class='btn btn-primary' value="Search" data-loading-text="Loading..."> -->
-  <button type="button" class='btn btn-primary' data-loading-text="Loading...">Search</button>
+  <button type="button" class='btn btn-primary' data-loading-text="Loading..." id='id_search'>Search</button>
 </div>
 <div class=alert>
   <div class="navbar">
-  <div class="navbar-inner">
-    <ul class="nav">
-      <li><a>Filter : </a></li>
-      <li><a href="#"><input type='button' id='all' value='All' class='btn btn-inverse' style="width:75px"></a></li>
-      <li><a href="#"><input type='button' id='paying' value='Paying' class='btn btn-inverse' style="width:75px"></a></li>
-      <li><a href="#"><input type='button' id='uploaded' value='Uploaded' class='btn btn-inverse' style="width:75px"></a></li>
-      <li><a href="#"><input type='button' id='staffpick' value='Staff Pick' class='btn btn-inverse' style="width:75px"></a></li>
-    </ul>
+    <div class="navbar-inner">
+      <ul class="nav">
+        <li><a class='active'>Filter : </a></li>
+        <li><a href="#"><input type='button' id='all' value='All' class='btn btn-inverse' style="width:75px"></a></li>
+        <li><a href="#"><input type='button' id='paying' value='Paying' class='btn btn-inverse' style="width:75px"></a></li>
+        <li><a href="#"><input type='button' id='uploaded' value='Uploaded' class='btn btn-inverse' style="width:75px"></a></li>
+        <li><a href="#"><input type='button' id='staffpick' value='Staff Pick' class='btn btn-inverse' style="width:75px"></a></li>
+      </ul>
+    </div>
   </div>
 </div>
-
-</div>
+<div id='search_results' style='width:900px;text-align:center;margin:20px;'></div>
 {% endblock %}

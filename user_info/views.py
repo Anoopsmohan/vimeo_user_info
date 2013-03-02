@@ -4,6 +4,7 @@ from user_info.models import UserDetails
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
+from django.template.loader import render_to_string
 
 
 def home(request):
@@ -48,3 +49,10 @@ def fetch_info(request):
         UserDetails.objects.all().delete()
         messages.success(request, 'User details removed from the database')
         return HttpResponse('User Details Deleted')
+
+
+def get_results(request):
+    if request.GET.get('search_text'):
+        results = UserDetails.objects.filter(name__contains=request.GET.get('search_text')).order_by('name')
+        search_results = render_to_string('search_results.html', {'results': results[:100], 'search_count': results.count()})
+        return HttpResponse(search_results)
