@@ -1,14 +1,16 @@
 import requests
 
-from user_info.models import UserDetails
 from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 
+from user_info.models import UserDetails
+
 
 def home(request):
     return render_to_response('home.html')
+
 
 def fetch_info(request):
     if request.GET.get('limit'):
@@ -53,6 +55,19 @@ def fetch_info(request):
 
 def get_results(request):
     if request.GET.get('search_text'):
-        results = UserDetails.objects.filter(name__contains=request.GET.get('search_text')).order_by('name')
-        search_results = render_to_string('search_results.html', {'results': results[:100], 'search_count': results.count()})
-        return HttpResponse(search_results)
+        if request.GET.get('action') == 'search':
+            results = UserDetails.objects.filter(name__contains=request.GET.get('search_text')).order_by('name')
+        elif request.GET.get('action') == 'paying':
+            results = UserDetails.objects.filter(name__contains=request.GET.get('search_text'), paying=True).order_by('name')
+        elif request.GET.get('action') == 'staff_pick':
+            results = UserDetails.objects.filter(name__contains=request.GET.get('search_text'), staff_pick=True).order_by('name')
+        elif request.GET.get('action') == 'uploaded':
+            results = UserDetails.objects.filter(name__contains=request.GET.get('search_text'), video_uploaded=True).order_by('name')
+        if results:
+            search_results = render_to_string('search_results.html', {'results': results[:100], 'search_count': results.count()})
+            return HttpResponse(search_results)
+        else:
+            message = 'error'
+    else:
+        message = 'empty_field'
+    return HttpResponse(message)

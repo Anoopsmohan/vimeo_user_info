@@ -10,17 +10,39 @@
     
     <script type='text/javascript'>
       $(document).ready(function(){
-        $('#id_search').click(function(){
+        function get_results(action) {
           var search_text = ($('#searchbox').val());
           $.ajax({
             url: '{% url user_info_get_results %}',
-            data: {'search_text': search_text },
+            data: {'search_text': search_text, 'action': action },
             type: 'get',
             async: 'false',
             success: function(result) {
-              $('#search_results').html(result);
+              if (result == 'empty_field'){
+                $('#error').html('<div class="alert alert-warning">Please enter this field</div>');
+                $('#search_results').html('');                
+              } else if(result == 'error'){
+                $('#error').html('<div class="alert alert-error"><strong>Sorry! </strong> No matches found. Please search another word </div>');             
+                $('#search_results').html('');                                
+              }else {
+                $('#error').html('');
+                $('#search_results').html(result);
+              }
             },
           });
+        }
+
+        $('#id_all, #id_search').click(function(){
+          get_results('search');
+        });
+        $('#id_paying').click(function(){
+          get_results('paying');
+        });
+        $('#id_staffpick').click(function(){
+          get_results('staff_pick');
+        });
+        $('#id_uploaded').click(function(){
+          get_results('uploaded');
         });
       });    
     </script>
