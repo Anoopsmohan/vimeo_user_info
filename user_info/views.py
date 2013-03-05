@@ -13,7 +13,8 @@ def home(request):
 
 def get_info(limit):
     """ Fetch info by using vimeo API's and store it in database"""
-    base_id = 506307
+
+    base_id = 506307 +  UserDetails.objects.count()
     count = 0
     while(1):
         try:
