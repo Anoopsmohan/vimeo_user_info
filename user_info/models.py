@@ -6,9 +6,8 @@ class UserDetails(models.Model):
     profile_url = models.URLField()
     paying = models.BooleanField()
     staff_pick = models.BooleanField()
+    staff_pick_url = models.URLField(null=True)
     video_uploaded = models.BooleanField()
 
     class Meta:
         ordering = ('name', )
-
-# Create your models here.

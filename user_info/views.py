@@ -1,4 +1,5 @@
 import requests
+import re
 
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -19,7 +20,7 @@ def get_info(limit):
     while(1):
         try:
             base_id += 1
-            info = requests.get('http://vimeo.com/api/v2/%s/info.json' % str(base_id)).json()
+            info = requests.get('http://vimeo.com/api/v2/%s/info.json' % str(base_id)).json
             if UserDetails.objects.filter(profile_url=info['profile_url']).exists():
                 continue
             user_info = UserDetails()
@@ -27,14 +28,14 @@ def get_info(limit):
             user_info.profile_url = info['profile_url']
             user_info.paying = int(info['is_plus'])
             user_info.staff_pick = False
-            if int(info['total_channels']) > 0:
-                channel_info = requests.get('http://vimeo.com/api/v2/%s/channels.json' % str(base_id)).json()
-                for i in channel_info:
-                    if i['id'] == 927:
-                        user_info.staff_pick = True
-                        break
-            else:
-                user_info.staff_pick = False
+            videos = requests.get('http://vimeo.com/api/v2/%s/videos.json' % str(base_id)).json
+            for video in videos:
+                response = requests.get(video['url'])
+                staff_pick = re.search('"name":"staffpicks"', response.content)
+                if staff_pick:
+                    user_info.staff_pick = True
+                    user_info.staff_pick_url = video['url']
+                    break
             if int(info['total_videos_uploaded']) >= 0:
                 user_info.video_uploaded = 1
             else:
@@ -43,6 +44,7 @@ def get_info(limit):
             count += 1
             if count >= limit:
                 break
+
         except:
             continue
 
