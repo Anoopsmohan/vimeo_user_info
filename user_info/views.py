@@ -4,6 +4,7 @@ import re
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
+from django.db.models import Max
 
 from user_info.models import UserDetails
 
@@ -15,7 +16,10 @@ def home(request):
 def get_info(limit):
     """ Fetch info by using vimeo API's and store it in database"""
 
-    base_id = 506307 +  UserDetails.objects.count()
+    if UserDetails.objects.count() > 0:
+        base_id = UserDetails.objects.aggregate(max_id=Max('user_id'))['max_id']
+    else:
+        base_id = 406307
     count = 0
     while(1):
         try:
@@ -25,6 +29,7 @@ def get_info(limit):
                 continue
             user_info = UserDetails()
             user_info.name = info['display_name']
+            user_info.user_id = info['id']
             user_info.profile_url = info['profile_url']
             user_info.paying = int(info['is_plus'])
             user_info.staff_pick = False
