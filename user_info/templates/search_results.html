@@ -1,16 +1,4 @@
 <label>Search Results : <span>{{ search_count }}</span> </label>
-
-<!--<table>
-  {% for result in results %}
-    <tr><td> <b><span class="label label-info">{{ result.name }}</span> </b></td></tr>
-    <tr><td> Paying? <b>{% if result.paying %} <span class="label label-success">Y</span> {% else %}  <span class="label label-warning">N</span>{% endif %}</b></td></tr>
-    <tr><td> Staff Pick? <b>{% if result.staff_pick %} <span class="label label-success">Y</span> {% else %} <span class="label label-warning">N</span> {% endif %}</b></td></tr>
-    <tr><td> Uploaded? <b>{% if result.video_uploaded %} <span class="label label-success">Y</span> {% else %} <span class="label label-warning">N</span></b>{% endif %}</td></tr>
-    <tr><td>&nbsp;</td></tr>
-  {% endfor %}
-</table> -->
-
-
 <table class="table table-striped">
   <thead>
     <tr>
@@ -19,6 +7,9 @@
       <th>Profile Url</th>
       <th>Paying?</th>
       <th>Staff Pick?</th>
+      {% if staffpick_url == 'true' %}
+        <th>StaffPick Url</th>
+      {% endif %}
       <th>Uploaded?</th>
     </tr>
   </thead>
@@ -30,6 +21,9 @@
       <td><a href="{{ result.profile_url }}" target="_blank">{{ result.profile_url }}</a></td>
       <td><b>{% if result.paying %} <span class="label label-success">Y</span> {% else %}  <span class="label label-warning">N</span>{% endif %}</b></td>
       <td><b>{% if result.staff_pick %} <span class="label label-success">Y</span> {% else %} <span class="label label-warning">N</span> {% endif %}</b></td>
+      {% if staffpick_url == 'true'%}
+      <td><a href="{{ result.staff_pick_url }}" target="_blank">{{ result.staff_pick_url }}</a></td>        
+      {% endif %}
       <td><b>{% if result.video_uploaded %} <span class="label label-success">Y</span> {% else %} <span class="label label-warning">N</span>{% endif %}</b></td>
     </tr>
   {% endfor %}

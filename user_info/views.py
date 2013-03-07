@@ -74,7 +74,10 @@ def get_results(request):
         elif request.GET.get('action') == 'uploaded':
             results = UserDetails.objects.filter(name__icontains=request.GET.get('search_text'), video_uploaded=True).order_by('name')
         if results:
-            search_results = render_to_string('search_results.html', {'results': results[:100], 'search_count': results.count()})
+            result = {'results': results[:100], 'search_count': results.count()}
+            if request.GET.get('action') == 'staff_pick':
+                result['staffpick_url'] = 'true'
+            search_results = render_to_string('search_results.html', result)
             return HttpResponse(search_results)
         else:
             message = 'error'
