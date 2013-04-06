@@ -11,4 +11,4 @@ class UserDetails(models.Model):
     video_uploaded = models.BooleanField()
 
     class Meta:
-        ordering = ('name', )
+        ordering = ('user_id', )
